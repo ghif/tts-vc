@@ -1,4 +1,12 @@
+# Check if this code is inside google colab environment
+try:
+    import google.colab
+    IN_COLAB = True
+except ImportError:
+    IN_COLAB = False
+
 import os
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -24,8 +32,15 @@ if torch.backends.mps.is_available():
 cloning_model = VoiceCloner.from_pretrained(DEVICE)
 
 
-PROJECT_ID = os.getenv("PROJECT_ID")
-TTS_LOCATION = os.getenv("TTS_LOCATION")
+if IN_COLAB:
+    from google.colab import userdata
+    PROJECT_ID = userdata.get("PROJECT_ID")
+    TTS_LOCATION = userdata.get("TTS_LOCATION")
+
+else:
+    PROJECT_ID = os.getenv("PROJECT_ID")
+    TTS_LOCATION = os.getenv("TTS_LOCATION")
+
 API_ENDPOINT = (
     f"{TTS_LOCATION}-texttospeech.googleapis.com"
     if TTS_LOCATION != "global"
@@ -99,7 +114,10 @@ def clone_voice(audio_path: str, target_voice_path: str, output_dir: str = "outp
 if __name__ == "__main__":
     text = "Halo, nama saya Dira Yuanita. Suara ini dihasilkan oleh model text-to-speech Chirp 3 dari Google Cloud."
     audio_content, tmp_filepath = generate_speech(text, voice="Leda", language_code="id-ID")
-    with open("output/tmp.mp3", "wb") as out:
+
+    # the output dir must be on the root directory
+    output_dir = "../..output"
+    with open(f"{output_dir}/tmp.mp3", "wb") as out:
         out.write(audio_content)
     print("Audio content written to file 'tmp.mp3'")
 
