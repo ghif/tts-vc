@@ -1,4 +1,4 @@
-# TTS# TTS-VC: Text-to-Speech and Voice Cloning
+# TTS-VC: Text-to-Speech and Voice Cloning
 
 A Python library for text-to-speech synthesis and voice cloning using state-of-the-art models including Chirp 3 and CosyVoice.
 
@@ -16,6 +16,7 @@ A Python library for text-to-speech synthesis and voice cloning using state-of-t
 
 - Python >= 3.12.11
 - PyTorch >= 2.8.0
+- Chirp 3 HD API
 
 ### Install from Source
 
@@ -27,6 +28,8 @@ cd tts-vc
 
 2. Install in development mode:
 ```bash
+# conda create -yn tts-vc python=3.12.11
+# conda activate tts-vc
 pip install -e .
 ```
 
