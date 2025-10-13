@@ -13,6 +13,13 @@ import torchaudio as ta
 
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 
+DEVICE = "cpu"
+if torch.cuda.is_available():
+    DEVICE = "cuda"
+
+if torch.backends.mps.is_available():
+    DEVICE = "mps"
+    
 # Load voice cloning model
 cloning_model = VoiceCloner.from_pretrained(DEVICE)
 
