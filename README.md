@@ -13,7 +13,7 @@ A simple Python implementation for text-to-speech synthesis and voice cloning us
 
 ### Requirements
 
-The detailed requirements can be found in pyproject.toml
+The detailed requirements can be found in pyproject.toml. It was specified such that it can be easily run on Google Colab.
 
 - Python >= 3.12.11
 - PyTorch >= 2.8.0

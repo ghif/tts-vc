@@ -20,8 +20,6 @@ import torch
 import torchaudio as ta
 from torch.amp import autocast
 
-DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
-
 DEVICE = "cpu"
 if torch.cuda.is_available():
     DEVICE = "cuda"
