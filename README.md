@@ -1,18 +1,19 @@
 # TTS-VC: Text-to-Speech and Voice Cloning
 
-A Python library for text-to-speech synthesis and voice cloning using state-of-the-art models including Chirp 3 and CosyVoice.
+A simple Python implementation for text-to-speech synthesis and voice cloning using state-of-the-art models including Chirp 3 and CosyVoice. This is used for an educational material.
+
 
 ## Features
 
-- **Text-to-Speech**: Generate natural-sounding speech from text
-- **Voice Cloning**: Clone voices using advanced neural models
-- **Multiple Models**: Support for Chirp 3, CosyVoice, and Google Cloud TTS
-- **High Quality**: State-of-the-art neural vocoding for realistic audio
-- **Easy Integration**: Simple Python API for quick integration
+- **Text-to-Speech**: Generate natural-sounding speech from text using Chirp 3
+- **Voice Cloning**: Clone voices using advanced neural models from CosyVoice
+- **UI Prototype**: Simple UI prototype with Gradio
 
 ## Installation
 
 ### Requirements
+
+The detailed requirements can be found in pyproject.toml
 
 - Python >= 3.12.11
 - PyTorch >= 2.8.0
@@ -93,21 +94,6 @@ with open("output.wav", "wb") as f:
     f.write(audio_data)
 ```
 
-## Project Structure
-
-```
-tts-vc/
-├── src/
-│   ├── __init__.py
-│   ├── vc.py                 # Voice cloning implementation
-│   └── models/
-│       ├── s3tokenizer.py    # S3 tokenizer model
-│       └── ...
-├── tts_services.py           # TTS service implementations
-├── test_vc_mac.py           # Voice cloning tests
-├── pyproject.toml           # Project configuration
-└── README.md
-```
 
 ## Models
 
@@ -120,11 +106,10 @@ tts-vc/
 
 ### Model Features
 
-- Multi-language support
+- English and Indonesian languages support
 - Real-time inference
 - High-quality audio synthesis
 - Voice adaptation and cloning
-- Prosody and emotion control
 
 ## Configuration
 
@@ -151,55 +136,10 @@ Core dependencies include:
 
 ### Advanced Voice Cloning
 
-```python
-from src import VoiceCloner
-import torchaudio
-
-# Initialize with custom settings
-vc = VoiceCloner(
-    model_name="cosyvoice",
-    device="cuda" if torch.cuda.is_available() else "cpu"
-)
-
-# Multi-speaker voice cloning
-speakers = ["speaker1.wav", "speaker2.wav"]
-mixed_voice = vc.blend_voices(
-    text="This combines multiple speakers",
-    speaker_files=speakers,
-    weights=[0.7, 0.3]
-)
-```
-
-### Batch Processing
-
-```python
-texts = [
-    "First sentence to synthesize",
-    "Second sentence with different voice",
-    "Third sentence for comparison"
-]
-
-# Batch process multiple texts
-results = vc.batch_synthesis(texts, reference_audio)
-```
 
 ## API Reference
 
 ### VoiceCloner Class
-
-```python
-class VoiceCloner:
-    def __init__(self, model_name="cosyvoice", device="auto"):
-        """Initialize voice cloner with specified model"""
-    
-    def clone_voice(self, text: str, reference_audio: torch.Tensor, 
-                   sample_rate: int = 22050) -> torch.Tensor:
-        """Clone voice from reference audio"""
-    
-    def batch_synthesis(self, texts: List[str], 
-                       reference_audio: torch.Tensor) -> List[torch.Tensor]:
-        """Process multiple texts with same reference voice"""
-```
 
 ## Contributing
 
@@ -228,13 +168,6 @@ pip install -e .
 python test_vc_mac.py
 ```
 
-## Performance
-
-- **Real-time Factor**: < 0.1x (faster than real-time)
-- **Memory Usage**: ~2GB GPU memory for inference
-- **Supported Sample Rates**: 16kHz, 22kHz, 24kHz, 48kHz
-- **Audio Formats**: WAV, MP3, FLAC
-
 ## Troubleshooting
 
 ### Common Issues
@@ -260,25 +193,14 @@ python test_vc_mac.py
 
 This project is licensed under the terms specified in the LICENSE file.
 
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@software{tts_vc_2024,
-  title={TTS-VC: Text-to-Speech and Voice Cloning},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/ghif/tts-vc}
-}
-```
 
 ## Acknowledgments
 
-- CosyVoice team for the voice cloning model
-- Google Cloud for TTS services
-- PyTorch team for the deep learning framework
-- Transformers library by Hugging Face
+- Resemble AI team for the neat code implementation of the voice cloning in [Chatterbox](https://github.com/resemble-ai/chatterbox).
+- [CosyVoice](https://funaudiollm.github.io/cosyvoice2/) team for the voice cloning model
+- Google for [Chirp 3](https://cloud.google.com/text-to-speech/docs/chirp3-hd) TTS services
+- [PyTorch](https://pytorch.org/) team for the deep learning framework
+- [Transformers](https://huggingface.co/docs/transformers/en/index) library by Hugging Face
 
 ## Contact
 
