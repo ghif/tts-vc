@@ -63,7 +63,7 @@ with gr.Blocks(
             
             voice = gr.Dropdown(choices=["Charon", "Leda"], value="Charon", label="Chirp 3's Voice Character")
             language_code = gr.Dropdown(choices=["id-ID", "en-US"], value="id-ID", label="Language Code")
-            ref_audio = gr.Audio(sources=["upload", "microphone"], interactive=True, label="Reference Voice Sample (Target Voice)", type="filepath", value="resources/ghif_reference_ID.wav")
+            ref_audio = gr.Audio(sources=["upload", "microphone"], interactive=True, label="Reference Voice Sample (Target Voice)", type="filepath", value="resources/ghif_reference_ID.mp3")
             run_btn = gr.Button("Generate", variant="primary")
 
         with gr.Column():

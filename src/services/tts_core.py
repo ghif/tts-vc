@@ -18,6 +18,7 @@ import tempfile
 from vc import VoiceCloner
 import torch
 import torchaudio as ta
+from torch.amp import autocast
 
 DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 
@@ -25,7 +26,7 @@ DEVICE = "cpu"
 if torch.cuda.is_available():
     DEVICE = "cuda"
 
-if torch.backends.mps.is_available():
+elif torch.backends.mps.is_available():
     DEVICE = "mps"
     
 # Load voice cloning model
@@ -99,9 +100,11 @@ def clone_voice(audio_path: str, target_voice_path: str, output_dir: str = "outp
     Returns:
         str: The path to the cloned audio file in WAV format.
     """
-    cloned_audio = cloning_model.generate(
-        audio=audio_path, target_voice_path=target_voice_path,
-    )
+    with torch.no_grad():
+        with autocast(device_type=DEVICE, dtype=torch.float16):
+            cloned_audio = cloning_model.generate(
+                audio=audio_path, target_voice_path=target_voice_path,
+            )
 
     # Save the cloned audio
     # Create output_dir if not exists
