@@ -58,7 +58,7 @@ with gr.Blocks(
         <div class="header">
             <h1>🎙️ Generate and Clone Your Own Voice</h1>
             <p>
-            Convert text to natural-sounding speech using Google's Chirp 3 and Resemble AI.
+            Convert text to natural-sounding speech using Google's <a href="https://cloud.google.com/text-to-speech/docs/chirp3-hd">Chirp 3: HD Voices</a> and Resemble AI's  <a href="https://github.com/resemble-ai/chatterbox">Chatterbox</a>.
             </p>
             <p>
             All the audio input and generated files are not permanent and will be deleted after a short period of time.
@@ -119,7 +119,6 @@ with gr.Blocks(
             language_code,
             ref_audio,
         ],
-        # outputs=audio_output,
         outputs=[audio_tts_output, audio_vc_output],
     )
 
