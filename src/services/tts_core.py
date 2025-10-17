@@ -6,6 +6,8 @@ except ImportError:
     IN_COLAB = False
 
 import os
+import time
+import threading
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -46,6 +48,21 @@ API_ENDPOINT = (
     else "texttospeech.googleapis.com"
 )
 
+def schedule_cleanup(filepath: str, delay_seconds: int = 1800):
+    """
+    Schedule file cleanup after some seconds.
+    """
+    def cleanup():
+        time.sleep(delay_seconds)
+        try:
+            if os.path.exists(filepath):
+                os.unlink(filepath)
+                print(f"Cleaned up temporary file: {filepath}")
+        except Exception as e:
+            print(f"Error cleaning up file {filepath}: {e}")
+    
+    threading.Thread(target=cleanup, daemon=True).start()
+
 def generate_speech(text, voice="Leda", language_code="id-ID"):
     """
     Generate speech using Google's Chirp 3 Text-to-Speech API
@@ -85,9 +102,11 @@ def generate_speech(text, voice="Leda", language_code="id-ID"):
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:
         tmp_file.write(audio_content)
-        return audio_content, tmp_file.name
+    
+    schedule_cleanup(tmp_file.name)
+    return audio_content, tmp_file.name
 
-def clone_voice(audio_path: str, target_voice_path: str, output_dir: str = "output") -> str:
+def clone_voice(audio_path: str, target_voice_path: str) -> str:
     """
     Clone the voice of the input audio to match the target voice sample.
 
@@ -105,20 +124,10 @@ def clone_voice(audio_path: str, target_voice_path: str, output_dir: str = "outp
             )
 
     # Save the cloned audio
-    # Create output_dir if not exists
-    os.makedirs(output_dir, exist_ok=True)
-    audio_filepath = os.path.join(output_dir, "cloned_output.wav")
-    ta.save(audio_filepath, cloned_audio, cloning_model.sr)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp_wav:
+        ta.save(tmp_wav.name, cloned_audio, cloning_model.sr)
+    
+    schedule_cleanup(tmp_wav.name)
 
-    return audio_filepath
-
-if __name__ == "__main__":
-    text = "Halo, nama saya Dira Yuanita. Suara ini dihasilkan oleh model text-to-speech Chirp 3 dari Google Cloud."
-    audio_content, tmp_filepath = generate_speech(text, voice="Leda", language_code="id-ID")
-
-    # the output dir must be on the root directory
-    output_dir = "../..output"
-    with open(f"{output_dir}/tmp.mp3", "wb") as out:
-        out.write(audio_content)
-    print("Audio content written to file 'tmp.mp3'")
+    return tmp_wav.name
 

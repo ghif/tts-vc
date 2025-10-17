@@ -47,7 +47,7 @@ def toggle_input_method(method: str):
         return gr.update(visible=False), gr.update(visible=True)
     
 with gr.Blocks(
-    title="Text-to-Speech (TTS) and Voice Cloning with Chirp 3 and CosyVoice",
+    title="Text-to-Speech (TTS) and Voice Cloning with Chirp 3 and Resemble AI",
     theme=gr.themes.Soft(),
     css="""
     .main-container {max-width: 800px; margin: 0 auto; }
@@ -57,7 +57,12 @@ with gr.Blocks(
     gr.HTML("""
         <div class="header">
             <h1>🎙️ Generate and Clone Your Own Voice</h1>
-            <p>Convert text to natural-sounding speech using Google's Chirp 3 and CosyVoice</p>
+            <p>
+            Convert text to natural-sounding speech using Google's Chirp 3 and Resemble AI.
+            </p>
+            <p>
+            All the audio input and generated files are not permanent and will be deleted after a short period of time.
+            </p>
         </div>
         """)
 
@@ -74,19 +79,21 @@ with gr.Blocks(
                 label="Enter Text to Synthesize",
                 interactive=True,
                 lines=5,
-                value="Halo semuanya. Selamat datang di demo text-to-speech menggunakan Google Chirp 3 dan voice cloning menggunakan CosyVoice. Silakan coba dengan teks buatanmu sendiri!"
+                value="Halo semuanya. Selamat datang di demo text-to-speech menggunakan Google Chirp 3 dan voice cloning menggunakan Resemble AI. Silakan coba dengan teks buatanmu sendiri!"
             )
 
             # File upload for text file
             text_file = gr.File(
                 label="Upload Text File (.txt)",
                 file_types=[".txt"],
-                type="filepath"
+                type="filepath",
+                visible=False,
+
             )
             
             voice = gr.Dropdown(choices=["Charon", "Leda"], value="Charon", label="Chirp 3's Voice Character")
             language_code = gr.Dropdown(choices=["id-ID", "en-US"], value="id-ID", label="Language Code")
-            ref_audio = gr.Audio(sources=["upload", "microphone"], interactive=True, label="Reference Voice Sample (Target Voice)", type="filepath", value="resources/ghif_reference_ID.mp3")
+            ref_audio = gr.Audio(sources=["upload", "microphone"], interactive=True, label="Reference Voice Sample (Target Voice)", type="filepath", value="resources/samples/LJ025-0076.wav")
             run_btn = gr.Button("Generate", variant="primary")
 
         with gr.Column():
@@ -116,16 +123,9 @@ with gr.Blocks(
         outputs=[audio_tts_output, audio_vc_output],
     )
 
-
-
-
-
 if __name__ == "__main__":
     # demo.queue(
     #     max_size=50,
     #     default_concurrency_limit=1,
     # ).launch(share=True)
-    demo.queue(
-        max_size=50,
-        default_concurrency_limit=1,
-    ).launch()
+    demo.launch()
