@@ -22,12 +22,25 @@ import torch
 import torchaudio as ta
 from torch.amp import autocast
 
-DEVICE = "cpu"
-if torch.cuda.is_available():
-    DEVICE = "cuda"
+def get_safe_device():
+    """
+    Get the safest device for large model inference.
+    """
+    if torch.cuda.is_available():
+        device = "cuda"
+        print(f"Using CUDA: {torch.cuda.get_device_name()}")
+    elif torch.backends.mps.is_available():
+        # MPS has memory limitations with large models, use CPU instead
+        print("MPS available but using CPU for large model stability")
+        device = "cpu"
+        # device = "mps"
+    else:
+        device = "cpu"
+        print("Using CPU")
+    
+    return device
 
-elif torch.backends.mps.is_available():
-    DEVICE = "mps"
+DEVICE = get_safe_device()
     
 # Load voice cloning model
 cloning_model = VoiceCloner.from_pretrained(DEVICE)
@@ -72,8 +85,8 @@ def generate_speech(text, voice="Leda", language_code="id-ID"):
         voice (str): The name of the voice to use (e.g., "Leda", "Charon").
         language_code (str): The language code for the voice (e.g., "id-ID" for Indonesian, "en-US" for English).
     Returns:
-        bytes: The synthesized speech audio in MP3 format.
-        
+        audio_content (bytes): The synthesized speech audio in MP3 format.
+        temporary_file_name (str): The filename of the synthesized audio.
     """
     # Obtain default credentials and create an authorized session
     voice_name = f"{language_code}-Chirp3-HD-{voice}"
@@ -93,6 +106,7 @@ def generate_speech(text, voice="Leda", language_code="id-ID"):
         input=texttospeech.SynthesisInput(text=text),
         voice=voice,
         audio_config=texttospeech.AudioConfig(
+            # audio_encoding=texttospeech.AudioEncoding.MP3
             audio_encoding=texttospeech.AudioEncoding.MP3
         ),
     )
@@ -117,8 +131,13 @@ def clone_voice(audio_path: str, target_voice_path: str) -> str:
     Returns:
         str: The path to the cloned audio file in WAV format.
     """
-    with torch.no_grad():
-        with autocast(device_type=DEVICE, dtype=torch.float16):
+    with torch.inference_mode():
+        if DEVICE == "cuda":
+            with autocast(device_type=DEVICE, dtype=torch.float16):
+                cloned_audio = cloning_model.generate(
+                    audio=audio_path, target_voice_path=target_voice_path,
+                )
+        else:
             cloned_audio = cloning_model.generate(
                 audio=audio_path, target_voice_path=target_voice_path,
             )

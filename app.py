@@ -79,7 +79,7 @@ with gr.Blocks(
                 label="Enter Text to Synthesize",
                 interactive=True,
                 lines=5,
-                value="Halo semuanya. Selamat datang di demo text-to-speech menggunakan Google Chirp 3 dan voice cloning menggunakan Resemble AI. Silakan coba dengan teks buatanmu sendiri!"
+                value="Halo semuanya. Selamat datang di demo text-to-speech menggunakan Google Chirp 3 dan voice cloning menggunakan Chatterbox. Silakan coba dengan teks buatanmu sendiri!"
             )
 
             # File upload for text file
@@ -93,7 +93,7 @@ with gr.Blocks(
             
             voice = gr.Dropdown(choices=["Charon", "Leda"], value="Charon", label="Chirp 3's Voice Character")
             language_code = gr.Dropdown(choices=["id-ID", "en-US"], value="id-ID", label="Language Code")
-            ref_audio = gr.Audio(sources=["upload", "microphone"], interactive=True, label="Reference Voice Sample (Target Voice)", type="filepath", value="resources/samples/LJ025-0076.wav")
+            ref_audio = gr.Audio(sources=["upload", "microphone"], interactive=True, label="Reference Voice Sample (Target Voice)", show_download_button=True, type="filepath", value="resources/samples/LJ025-0076.wav")
             run_btn = gr.Button("Generate", variant="primary")
 
         with gr.Column():

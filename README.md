@@ -1,12 +1,12 @@
 # TTS-VC: Text-to-Speech and Voice Cloning
 
-A simple Python implementation for text-to-speech synthesis and voice cloning using state-of-the-art models including Chirp 3 and CosyVoice. This is used for an educational material.
+A simple Python implementation for text-to-speech synthesis and voice cloning using state-of-the-art models including Chirp 3 and Chatterbox. This is used for an educational material.
 
 
 ## Features
 
 - **Text-to-Speech**: Generate natural-sounding speech from text using Chirp 3
-- **Voice Cloning**: Clone voices using advanced neural models from CosyVoice
+- **Voice Cloning**: Clone voices using advanced neural models from Chatterbox
 - **UI Prototype**: Simple UI prototype with Gradio
 
 ## Installation
@@ -51,47 +51,28 @@ export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/service-account-key.json"
 
 ## Quick Start
 
-### Basic Voice Cloning
-
-```python
-from src import VoiceCloner
-import torch
-import torchaudio
-
-# Initialize the voice cloner
-vc = VoiceCloner()
-
-# Load reference audio for voice cloning
-reference_audio, sr = torchaudio.load("reference_voice.wav")
-
-# Clone voice with new text
-cloned_audio = vc.clone_voice(
-    text="Hello, this is a cloned voice!",
-    reference_audio=reference_audio,
-    sample_rate=sr
-)
-
-# Save the result
-torchaudio.save("cloned_output.wav", cloned_audio, sr)
-```
-
 ### Text-to-Speech
 
 ```python
-from tts_services import GoogleTTSService
+import services.tts_core as tts
 
-# Initialize TTS service
-tts = GoogleTTSService()
+# Generate speech with Chirp 3 TTS
+voice = "Charon"
+language_code = "id-ID"
+tts_audio, tts_filepath = tts.generate_speech(text, voice=voice, language_code=language_code)
+```
 
-# Generate speech
-audio_data = tts.synthesize(
-    text="Hello, world!",
-    voice_name="en-US-Neural2-F"
-)
 
-# Save audio
-with open("output.wav", "wb") as f:
-    f.write(audio_data)
+### Basic Voice Cloning
+
+```python
+import services.tts_core as tts
+
+# Paths to the input audio and target voice sample
+AUDIO_PATH = "<PATH TO SOURCE AUDIO (wav/mp3)>"
+TARGET_VOICE_PATH = "<PATH TO REFERENCE AUDIO (wav/mp3)>"
+
+cloned_filepath = tts.clone_voice(AUDIO_PATH, TARGET_VOICE_PATH)
 ```
 
 
@@ -99,10 +80,10 @@ with open("output.wav", "wb") as f:
 
 ### Supported Models
 
-- **CosyVoice**: Advanced voice cloning with natural prosody
+- **Chatterbox**: 
+- **CosyVoice**: Advanced voice cloning with natural prosody, including the S3 tokenizer
 - **Chirp 3**: State-of-the-art speech synthesis
 - **Google Cloud TTS**: Cloud-based text-to-speech with multiple voices
-- **S3 Tokenizer**: Advanced tokenization for speech processing
 
 ### Model Features
 
@@ -122,72 +103,6 @@ export GOOGLE_APPLICATION_CREDENTIALS="path/to/service-account.json"
 # Model paths (if using local models)
 export MODEL_PATH="path/to/models"
 ```
-
-### Dependencies
-
-Core dependencies include:
-- PyTorch 2.8.0
-- Transformers 4.57.0
-- Librosa 0.11.0
-- Diffusers 0.35.1
-- NumPy >= 2.0.2
-
-## Usage Examples
-
-### Advanced Voice Cloning
-
-
-## API Reference
-
-### VoiceCloner Class
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make changes and add tests
-4. Commit changes: `git commit -am 'Add feature'`
-5. Push to branch: `git push origin feature-name`
-6. Submit a pull request
-
-## Development Setup
-
-```bash
-# Clone repository
-git clone https://github.com/ghif/tts-vc.git
-cd tts-vc
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install in development mode
-pip install -e .
-
-# Run tests
-python test_vc_mac.py
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **ImportError: attempted relative import with no known parent package**
-   ```bash
-   pip install -e .  # Install package properly
-   ```
-
-2. **CUDA out of memory**
-   ```python
-   # Use CPU or reduce batch size
-   vc = VoiceCloner(device="cpu")
-   ```
-
-3. **Google Cloud authentication errors**
-   ```bash
-   gcloud auth application-default login
-   export GOOGLE_APPLICATION_CREDENTIALS="path/to/key.json"
-   ```
 
 ## License
 
