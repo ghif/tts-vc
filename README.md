@@ -21,7 +21,8 @@ The detailed requirements can be found in pyproject.toml. It was specified such 
 
 
 ### Run on Google Colab
-
+To run this repository on Google Colab, see the following notebook script:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1A6lA7mkI5D41PGYwcuwCSIHhS2820KkH?usp=sharing)
 
 ### Run on Local Machine
 
