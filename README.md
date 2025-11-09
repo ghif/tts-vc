@@ -19,7 +19,11 @@ The detailed requirements can be found in pyproject.toml. It was specified such 
 - PyTorch >= 2.8.0
 - Chirp 3 HD API
 
-### Install from Source
+
+### Run on Google Colab
+
+
+### Run on Local Machine
 
 1. Clone the repository:
 ```bash
@@ -80,10 +84,9 @@ cloned_filepath = tts.clone_voice(AUDIO_PATH, TARGET_VOICE_PATH)
 
 ### Supported Models
 
-- **Chatterbox**: 
-- **CosyVoice**: Advanced voice cloning with natural prosody, including the S3 tokenizer
-- **Chirp 3**: State-of-the-art speech synthesis
-- **Google Cloud TTS**: Cloud-based text-to-speech with multiple voices
+- **Chatterbox**: Production-grade open-source TTS model supporting 23 languages.
+- **CosyVoice**: Advanced voice cloning with natural prosody, including the S3 tokenizer.
+- **Chirp 3**: Latest generation of TTS technology from Google.
 
 ### Model Features
 
