@@ -74,16 +74,10 @@ export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/service-account-key.json"
 
 ### Gradio Interface
 
-To run the Gradio interface, you can run either `app.py` or `app_local.py`:
+To run the Gradio interface, you can run `app.py`:
 
 ```bash
 python app.py
-```
-
-or
-
-```bash
-python app_local.py
 ```
 
 ### Quick Start
