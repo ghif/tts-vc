@@ -37,7 +37,7 @@ The detailed requirements can be found in pyproject.toml. It was specified such 
 
 ### Run on Google Colab
 To run this repository on Google Colab, see the following notebook script:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1A6lA7mkI5D41PGYwcuwCSIHhS2820KkH?usp=sharing)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/15YdikRcUDuAKxOdiYja468Ughj_oE-X9?usp=sharing)
 
 ### Run on Local Machine
 
@@ -49,8 +49,8 @@ cd tts-vc
 
 2. Install in development mode:
 ```bash
-# conda create -yn tts-vc python=3.12.11
-# conda activate tts-vc
+conda create -yn tts-vc python=3.12.11
+conda activate tts-vc
 pip install -e .
 ```
 
