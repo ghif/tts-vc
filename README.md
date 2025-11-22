@@ -12,7 +12,6 @@ A simple Python implementation for text-to-speech synthesis and voice cloning us
 
 ```
 ├── app.py                  # Gradio application for online demo
-├── app_local.py            # Gradio application for local usage
 ├── Dockerfile              # Dockerfile for containerization
 ├── LICENSE                 # Project license
 ├── pyproject.toml          # Project dependencies and metadata
@@ -153,6 +152,21 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 ## Configuration
 
 ### Environment Variables
+
+To configure environment variables, copy the `.env.sample` file to `.env` and adjust the values:
+
+```bash
+cp .env.sample .env
+# Open .env and set your PROJECT_ID and TTS_LOCATION
+```
+
+Example `.env` file:
+```
+PROJECT_ID="your-gcp-project-id"
+TTS_LOCATION="global"
+```
+
+Additionally, for Google Cloud TTS features:
 
 ```bash
 # Google Cloud TTS (optional)
