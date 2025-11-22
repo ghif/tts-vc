@@ -3,6 +3,12 @@ Gradio frontend for text-to-speech synthesis.
 Use tts_google.py for Google Chirp 3 TTS integration.
 """
 
+import sys
+import os
+
+# Add 'src' to sys.path to ensure modules can be imported
+sys.path.append(os.path.abspath("src"))
+
 import gradio as gr
 import services.tts_core as tts
 

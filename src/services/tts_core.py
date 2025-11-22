@@ -116,7 +116,6 @@ def generate_speech(text, voice="Leda", language_code="id-ID"):
         input=texttospeech.SynthesisInput(text=text),
         voice=voice,
         audio_config=texttospeech.AudioConfig(
-            # audio_encoding=texttospeech.AudioEncoding.MP3
             audio_encoding=texttospeech.AudioEncoding.MP3
         ),
     )
