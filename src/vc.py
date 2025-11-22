@@ -15,6 +15,9 @@ REPO_ID = "ResembleAI/chatterbox"
 
 
 class VoiceCloner:
+    """
+    Voice cloning model.
+    """
     ENC_COND_LEN = 6 * S3_SR
     DEC_COND_LEN = 10 * S3GEN_SR
 
@@ -38,6 +41,9 @@ class VoiceCloner:
 
     @classmethod
     def from_local(cls, ckpt_dir, device) -> 'VoiceCloner':
+        """
+        Load the model from a local directory.
+        """
         ckpt_dir = Path(ckpt_dir)
         
         # Always load to CPU first for non-CUDA devices to handle CUDA-saved models
@@ -61,6 +67,9 @@ class VoiceCloner:
 
     @classmethod
     def from_pretrained(cls, device) -> 'VoiceCloner':
+        """
+        Load the model from the Hugging Face Hub.
+        """
         # Check if MPS is available on macOS
         if device == "mps" and not torch.backends.mps.is_available():
             if not torch.backends.mps.is_built():
@@ -75,6 +84,9 @@ class VoiceCloner:
         return cls.from_local(Path(local_path).parent, device)
 
     def set_target_voice(self, wav_fpath):
+        """
+        Set the target voice for cloning.
+        """
         ## Load reference wav
         s3gen_ref_wav, _sr = librosa.load(wav_fpath, sr=S3GEN_SR)
         s3gen_ref_wav = s3gen_ref_wav[:self.DEC_COND_LEN]
@@ -85,6 +97,9 @@ class VoiceCloner:
         audio,
         target_voice_path=None,
     ):
+        """
+        Generate the cloned voice.
+        """
         if target_voice_path:
             self.set_target_voice(target_voice_path)
         else:

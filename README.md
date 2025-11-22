@@ -2,12 +2,28 @@
 
 A simple Python implementation for text-to-speech synthesis and voice cloning using state-of-the-art models including Chirp 3 and Chatterbox. This is used for an educational material.
 
-
 ## Features
 
 - **Text-to-Speech**: Generate natural-sounding speech from text using Chirp 3
 - **Voice Cloning**: Clone voices using advanced neural models from Chatterbox
 - **UI Prototype**: Simple UI prototype with Gradio
+
+## Project Structure
+
+```
+├── app.py                  # Gradio application for online demo
+├── app_local.py            # Gradio application for local usage
+├── Dockerfile              # Dockerfile for containerization
+├── LICENSE                 # Project license
+├── pyproject.toml          # Project dependencies and metadata
+├── README.md               # This README file
+├── resources/              # Sample audio and text files
+├── src/                    # Source code
+│   ├── services/           # Core services for TTS and voice cloning
+│   │   └── tts_core.py
+│   └── models/             # Voice cloning models
+└── test_vc_mac.py          # Test script for voice cloning
+```
 
 ## Installation
 
@@ -54,9 +70,25 @@ gcloud auth application-default login
 export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/service-account-key.json"
 ```
 
-## Quick Start
+## Usage
 
-### Text-to-Speech
+### Gradio Interface
+
+To run the Gradio interface, you can run either `app.py` or `app_local.py`:
+
+```bash
+python app.py
+```
+
+or
+
+```bash
+python app_local.py
+```
+
+### Quick Start
+
+#### Text-to-Speech
 
 ```python
 import services.tts_core as tts
@@ -68,7 +100,7 @@ tts_audio, tts_filepath = tts.generate_speech(text, voice=voice, language_code=l
 ```
 
 
-### Basic Voice Cloning
+#### Basic Voice Cloning
 
 ```python
 import services.tts_core as tts
@@ -80,6 +112,34 @@ TARGET_VOICE_PATH = "<PATH TO REFERENCE AUDIO (wav/mp3)>"
 cloned_filepath = tts.clone_voice(AUDIO_PATH, TARGET_VOICE_PATH)
 ```
 
+## API Reference
+
+### `services.tts_core.generate_speech(text, voice="Leda", language_code="id-ID")`
+
+- **text** (str): The text to be synthesized.
+- **voice** (str, optional): The name of the voice to use (e.g., "Leda", "Charon"). Defaults to "Leda".
+- **language_code** (str, optional): The language code for the voice (e.g., "id-ID" for Indonesian, "en-US" for English). Defaults to "id-ID".
+
+**Returns**: A tuple containing the audio content in bytes and the path to the temporary audio file.
+
+### `services.tts_core.clone_voice(audio_path, target_voice_path)`
+
+- **audio_path** (str): Path to the input audio file to be cloned.
+- **target_voice_path** (str): Path to the target voice sample audio file.
+
+**Returns**: The path to the cloned audio file in WAV format.
+
+## Testing
+
+To run the test script for voice cloning, run the following command:
+
+```bash
+python test_vc_mac.py
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
 
 ## Models
 

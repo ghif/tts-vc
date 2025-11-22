@@ -34,6 +34,9 @@ from .configs import CFM_PARAMS
 
 
 def drop_invalid_tokens(x):
+    """
+    Drop invalid tokens from the input tensor.
+    """
     assert len(x.shape) <= 2 and x.shape[0] == 1, "only batch size of one allowed for now"
     return x[x < SPEECH_VOCAB_SIZE]
 
@@ -41,6 +44,9 @@ def drop_invalid_tokens(x):
 # TODO: global resampler cache
 @lru_cache(100)
 def get_resampler(src_sr, dst_sr, device):
+    """
+    Get a resampler from the cache.
+    """
     return ta.transforms.Resample(src_sr, dst_sr).to(device)
 
 
@@ -101,6 +107,9 @@ class S3Token2Mel(torch.nn.Module):
 
     @property
     def device(self):
+        """
+        Get the device of the model.
+        """
         params = self.tokenizer.parameters()
         return next(params).device
 
@@ -111,6 +120,9 @@ class S3Token2Mel(torch.nn.Module):
         device="auto",
         ref_fade_out=True,
     ):
+        """
+        Embed the reference audio.
+        """
         device = self.device if device == "auto" else device
         if isinstance(ref_wav, np.ndarray):
             ref_wav = torch.from_numpy(ref_wav).float()
@@ -245,6 +257,9 @@ class S3Token2Wav(S3Token2Mel):
         ref_dict: Optional[dict] = None,
         finalize: bool = False
     ):
+        """
+        Generate waveforms from S3 speech tokens and a reference waveform, which the speaker timbre is inferred from.
+        """
         output_mels = super().forward(speech_tokens, ref_wav=ref_wav, ref_sr=ref_sr, ref_dict=ref_dict, finalize=finalize)
 
         # TODO jrm: ignoring the speed control (mel interpolation) and the HiFTGAN caching mechanisms for now.
@@ -269,10 +284,16 @@ class S3Token2Wav(S3Token2Mel):
         ref_dict: Optional[dict] = None,
         finalize: bool = False,
     ):
+        """
+        Generate mel-spectrograms from S3 speech tokens and a reference waveform.
+        """
         return super().forward(speech_tokens, ref_wav=ref_wav, ref_sr=ref_sr, ref_dict=ref_dict, finalize=finalize)
 
     @torch.inference_mode()
     def hift_inference(self, speech_feat, cache_source: torch.Tensor = None):
+        """
+        Generate waveforms from mel-spectrograms.
+        """
         if cache_source is None:
             cache_source = torch.zeros(1, 1, 0).to(self.device)
         return self.mel2wav.inference(speech_feat=speech_feat, cache_source=cache_source)
@@ -289,6 +310,9 @@ class S3Token2Wav(S3Token2Mel):
         cache_source: torch.Tensor = None, # NOTE: this arg is for streaming, it can probably be removed here
         finalize: bool = True,
     ):
+        """
+        Generate waveforms from S3 speech tokens and a reference waveform.
+        """
         output_mels = self.flow_inference(speech_tokens, ref_wav=ref_wav, ref_sr=ref_sr, ref_dict=ref_dict, finalize=finalize)
         output_wavs, output_sources = self.hift_inference(output_mels, cache_source)
 

@@ -76,6 +76,16 @@ def schedule_cleanup(filepath: str, delay_seconds: int = 1800):
     
     threading.Thread(target=cleanup, daemon=True).start()
 
+def list_voices():
+    """
+    List the available voices.
+    """
+    client = texttospeech.TextToSpeechClient(
+        client_options=ClientOptions(api_endpoint=API_ENDPOINT)
+    )
+    response = client.list_voices()
+    return response.voices
+
 def generate_speech(text, voice="Leda", language_code="id-ID"):
     """
     Generate speech using Google's Chirp 3 Text-to-Speech API
@@ -149,4 +159,3 @@ def clone_voice(audio_path: str, target_voice_path: str) -> str:
     schedule_cleanup(tmp_wav.name)
 
     return tmp_wav.name
-

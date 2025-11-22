@@ -52,6 +52,7 @@ with gr.Blocks(
     css="""
     .main-container {max-width: 800px; margin: 0 auto; }
     .header { text-align: center; margin-bottom: 2rem;}
+    .footer { text-align: center; margin-top: 2rem; }
     """
 ) as demo:
     gr.HTML("""
@@ -121,6 +122,14 @@ with gr.Blocks(
         ],
         outputs=[audio_tts_output, audio_vc_output],
     )
+
+    gr.HTML("""
+        <div class="footer">
+            <p>
+            Powered by <a href="https://cloud.google.com/text-to-speech/docs/chirp3-hd">Google Chirp 3</a> and <a href="https://github.com/resemble-ai/chatterbox">Chatterbox</a>.
+            </p>
+        </div>
+        """)
 
 if __name__ == "__main__":
     # demo.queue(
