@@ -45,15 +45,14 @@ DEVICE = get_safe_device()
 # Load voice cloning model
 cloning_model = VoiceCloner.from_pretrained(DEVICE)
 
+TTS_LOCATION = "global"
 
 if IN_COLAB:
     from google.colab import userdata
     PROJECT_ID = userdata.get("PROJECT_ID")
-    TTS_LOCATION = userdata.get("TTS_LOCATION")
 
 else:
     PROJECT_ID = os.getenv("PROJECT_ID")
-    TTS_LOCATION = os.getenv("TTS_LOCATION")
 
 API_ENDPOINT = (
     f"{TTS_LOCATION}-texttospeech.googleapis.com"
